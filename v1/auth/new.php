@@ -2,40 +2,43 @@
 require_once '../../db.php';
 $continue = false;
 $data = json_decode(file_get_contents('php://input'), true);
-$email = check_data($data["email"]);
-$username = check_data($data["username"]);
-$password = check_data($data["password"]);
-$user_type = check_data($data["user_type"]);
-$service = check_data($data["service"]);
 
-if($service=="root"){
-    if(isset($data["#0U8@ZRP8tMomhXU&3y"])){
-        $continue = true;
+if(isset($data["email"]) && isset($data["username"]) && isset($data["password"]) && isset($data["user_type"]) && isset($data["service"]) && isset($data["service_salt"])){
+    
+    $email = check_data($data["email"]);
+    $username = check_data($data["username"]);
+    $password = check_data($data["password"]);
+    $user_type = check_data($data["user_type"]);
+    $service = check_data($data["service"]);
+    $service_salt = check_data($data["service_salt"]);
+
+    $sql_service_exists = $pdo->prepare("SELECT * FROM services WHERE name=? AND service_salt=?");
+    $sql_service_exists->execute(array($service,$service_salt));
+    if($sql_service_exists->fetchColumn() > 0){
+        $sql_check = $pdo->prepare("SELECT COUNT(*) FROM users WHERE (email=? OR username=?) AND service=?");
+        $sql_check->execute(array($email,$username,$service));
+
+        if($sql_check->fetchColumn() == 0){
+            $hashed_password = password_hash($password,PASSWORD_DEFAULT);
+            $sql = $pdo->prepare("INSERT INTO users(email,username,password,user_type,service) VALUES(?,?,?,?,?)");
+            if($sql->execute(array($email,$username,$hashed_password,$user_type,$service)))
+            {
+                echo json_encode('{"status":"success","message":"User added successfully."}',true);
+            }
+            else{
+                echo json_encode('{"status":"error","message":"Error adding user. Please try again later."}',true);
+            }
+        }
+        else{
+            echo json_encode('{"status":"error","message":"Username or email already exists."}',true);
+        }
     }
-    else {
-        $continue = false;
-        echo json_encode('{"status":"error","message":"Secret missing!"}',true);
+    else{
+        echo json_encode('{"status":"error","message":"No service matches. Check the data."}',true);
     }
 }
 else{
-    $continue = true;
-}
-
-if($email==null || $email=='' ||$username==null || $username=='' ||$password==null || $password=='' ||$user_type==null || $user_type=='' ||$service==null || $service==''){
-    $continue = false;
     echo json_encode('{"status":"error","message":"There was a wrong input of some sort. Check the data that was sent."}',true);
-}
-
-if($continue){
-    $hashed_password = password_hash($password,PASSWORD_DEFAULT);
-    $sql = $pdo->prepare("INSERT INTO users(email,username,password,user_type,service) VALUES(?,?,?,?,?)");
-    if($sql->execute(array($email,$username,$hashed_password,$user_type,$service)))
-    {
-        echo json_encode('{"status":"success","message":"User added successfully."}',true);
-    }
-    else{
-        echo json_encode('{"status":"error","message":"Error adding user. Please try again later."}',true);
-    }
 }
 
 function check_data($entry){
