@@ -9,10 +9,12 @@ if(isset($data["service"]) && isset($data["service_salt"]) && (isset($data["id"]
     if($sql_service_exists->fetchColumn() > 0){
         if(isset($data["id"])){
             $user_id = check_data($data["id"]);
-            $sql = $pdo->prepare("SELECT id,email,username,user_type,service,created_at,updated_at FROM users WHERE id=? LIMIT 1");
-            $sql->execute(array($user_id));
-            if($sql->fetchColumn() > 0){
-                $result = $sql->fetch(PDO::FETCH_ASSOC);
+            $sql1 = $pdo->prepare("SELECT id,email,username,user_type,service,created_at,updated_at FROM users WHERE id=? LIMIT 1");
+            $sql1->execute(array($user_id));
+            $sql2 = $pdo->prepare("SELECT id,email,username,user_type,service,created_at,updated_at FROM users WHERE id=? LIMIT 1");
+            $sql2->execute(array($user_id));
+            if($sql1->fetchColumn() > 0){
+                $result = $sql2->fetch(PDO::FETCH_ASSOC);
                 echo json_encode('{"status":"success","message":"Users returned.","data":'.$result.'}',true);
             }
             else{
