@@ -11,7 +11,7 @@ if(isset($data["service"]) && isset($data["service_salt"])){
         $sql_users->execute(array($service_name));
         if($sql_users->fetchColumn() > 0){
             $result = json_encode($sql_users->fetchAll(PDO::FETCH_ASSOC));
-            echo json_encode('{"status":"success","message":"Users returned successfully.","data":'.$result.'}',true);
+            echo json_encode('{"status":"success","message":"Users returned successfully.","data":'.$result.'}');
         }
         else{
             echo json_encode('{"status":"error","message":"No users found."}',true);
