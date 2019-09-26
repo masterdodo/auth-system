@@ -9,10 +9,9 @@ if(isset($data["service"]) && isset($data["service_salt"])){
     if($sql_service_exists->fetchColumn() > 0){
         $sql_users = $pdo->prepare("SELECT id,email,username,service,user_type,created_at,updated_at FROM users WHERE service=?");
         $users_execute = $sql_users->execute(array($service_name));
-        $result = json_encode($users_execute->fetchAll(PDO::FETCH_ASSOC));
+        $result = json_encode($users_execute->fetchAll(PDO::FETCH_ASSOC),true);
         if($users_execute->fetchColumn() > 0){
-            echo $result;
-            echo json_encode('{"status":"success","message":"Users returned successfully.","data":'.$result.'}');
+            echo json_encode('{"status":"success","message":"Users returned successfully.","data":'.$result.'}',true);
         }
         else{
             echo json_encode('{"status":"error","message":"No users found."}',true);
