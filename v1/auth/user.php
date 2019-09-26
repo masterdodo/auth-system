@@ -21,10 +21,12 @@ if(isset($data["service"]) && isset($data["service_salt"]) && (isset($data["id"]
         }
         else if(isset($data["email"])){
             $user_email = check_data($data["email"]);
-            $sql = $pdo->prepare("SELECT id,email,username,user_type,service,created_at,updated_at FROM users WHERE email=? AND service=? LIMIT 1");
-            $sql->execute(array($user_email,$service_name));
-            if($sql->fetchColumn() > 0){
-                $result = $sql->fetch(PDO::FETCH_ASSOC);
+            $sql1 = $pdo->prepare("SELECT id,email,username,user_type,service,created_at,updated_at FROM users WHERE email=? AND service=? LIMIT 1");
+            $sql1->execute(array($user_email,$service_name));
+            $sql2 = $pdo->prepare("SELECT id,email,username,user_type,service,created_at,updated_at FROM users WHERE email=? AND service=? LIMIT 1");
+            $sql2->execute(array($user_email,$service_name));
+            if($sql1->fetchColumn() > 0){
+                $result = $sql2->fetch(PDO::FETCH_ASSOC);
                 echo json_encode('{"status":"success","message":"Users returned.","data":'.$result.'}',true);
             }
             else{
