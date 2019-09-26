@@ -10,7 +10,7 @@ if(isset($data["service"]) && isset($data["service_salt"])){
         $sql_users = $pdo->prepare("SELECT id,email,username,service,user_type,created_at,updated_at FROM users WHERE service=?");
         $sql_users->execute(array($service_name));
         if($sql_users->fetchColumn() > 0){
-            $result = $sql_users->fetch(PDO::FETCH_ASSOC);
+            $result = json_encode($sql_users->fetch(PDO::FETCH_ASSOC),true);
             echo json_encode('{"status":"success","message":"Users returned successfully.","data":'.$result.'}',true);
         }
         else{
