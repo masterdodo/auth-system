@@ -14,7 +14,7 @@ if(isset($data["service"]) && isset($data["service_salt"]) && (isset($data["id"]
             $sql2 = $pdo->prepare("SELECT id,email,username,user_type,service,created_at,updated_at FROM users WHERE id=? LIMIT 1");
             $sql2->execute(array($user_id));
             if($sql1->fetchColumn() > 0){
-                $result = $sql2->fetch(PDO::FETCH_ASSOC);
+                $result = json_encode($sql2->fetch(PDO::FETCH_ASSOC),true);
                 echo json_encode('{"status":"success","message":"Users returned.","data":'.$result.'}',true);
             }
             else{
