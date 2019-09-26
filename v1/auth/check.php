@@ -1,4 +1,5 @@
 <?php
+header('Content-type: text/plain; charset=utf-8');
 require_once '../../db.php';
 $data = json_decode(file_get_contents('php://input'), true);
 if(isset($data["password"]) && isset($data["service"]) && isset($data["service_salt"]) && isset($data["type"]) && (isset($data["email"]) || isset($data["username"]))){

@@ -1,4 +1,5 @@
 <?php
+header('Content-type: text/plain; charset=utf-8');
 require_once '../../db.php';
 $continue = false;
 $data = json_decode(file_get_contents('php://input'), true);
