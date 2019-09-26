@@ -13,10 +13,12 @@ if(isset($data["password"]) && isset($data["service"]) && isset($data["service_s
         if($type=="email"){
             if(isset($data["email"])){
                 $email = check_data($data["email"]);
-                $sql_email = $pdo->prepare("SELECT id,username,email,password,user_type,service FROM users WHERE email = ?");
-                $sql_email->execute(array($email));
-                $result = $sql_email->fetch(PDO::FETCH_ASSOC);
-                if($sql_email->fetchColumn() > 0){
+                $sql_email1 = $pdo->prepare("SELECT id,username,email,password,user_type,service FROM users WHERE email = ? AND service=?");
+                $sql_email1->execute(array($email,$service));
+                $sql_email2 = $pdo->prepare("SELECT id,username,email,password,user_type,service FROM users WHERE email = ? AND service=?");
+                $sql_email2->execute(array($email,$service));
+                $result = $sql_email1->fetch(PDO::FETCH_ASSOC);
+                if($sql_email2->fetchColumn() > 0){
                     $hash = $result["password"];
                     if(password_verify($password,$hash)){
                         if(password_needs_rehash($hash,PASSWORD_DEFAULT)){
@@ -48,10 +50,12 @@ if(isset($data["password"]) && isset($data["service"]) && isset($data["service_s
         else if($type=="username"){
             if(isset($data["username"])){
                 $username = check_data($data["username"]);
-                $sql_username = $pdo->prepare("SELECT username,email,password,user_type,service FROM users WHERE username = ?");
-                $sql_username->execute(array($username));
-                $result = $sql_username->fetch(PDO::FETCH_ASSOC);
-                if($sql_username->fetchColumn() > 0){
+                $sql_username1 = $pdo->prepare("SELECT username,email,password,user_type,service FROM users WHERE username = ? AND service=?");
+                $sql_username1->execute(array($username,$service));
+                $sql_username2 = $pdo->prepare("SELECT username,email,password,user_type,service FROM users WHERE username = ? AND service=?");
+                $sql_username2->execute(array($username,$service));
+                $result = $sql_username1->fetch(PDO::FETCH_ASSOC);
+                if($sql_username2->fetchColumn() > 0){
                     $hash = $result["password"];
                     if(password_verify($password,$hash)){
                         if(password_needs_rehash($hash,PASSWORD_DEFAULT)){
