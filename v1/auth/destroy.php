@@ -11,32 +11,32 @@ if(isset($data["service"]) && isset($data["service_salt"]) && (isset($data["id"]
             $user_id = check_data($data["id"]);
             $sql = $pdo->prepare("DELETE FROM users WHERE id=? AND service=?");
             if($sql->execute(array($user_id,$service_name))){
-                echo json_encode('{"status":"success","message":"User removed."}',true);
+                echo '{"status":"success","message":"User removed."}';
             }
             else{
-                echo json_encode('{"status":"error","message":"User removal failed. Try again later."}',true);
+                echo '{"status":"error","message":"User removal failed. Try again later."}';
             }
         }
         else if(isset($data["email"])){
             $user_email = check_data($data["email"]);
             $sql = $pdo->prepare("DELETE FROM users WHERE email=? AND service=?");
             if($sql->execute(array($user_email,$service_name))){
-                echo json_encode('{"status":"success","message":"User removed."}',true);
+                echo '{"status":"success","message":"User removed."}';
             }
             else{
-                echo json_encode('{"status":"error","message":"User removal failed. Try again later."}',true);
+                echo '{"status":"error","message":"User removal failed. Try again later."}';
             }
         }
         else {
-            echo json_encode('{"status":"error","message":"Can\'t remove user without id or email provided."}',true);
+            echo '{"status":"error","message":"Can\'t remove user without id or email provided."}';
         }
     }
     else{
-        echo json_encode('{"status":"error","message":"Provided service doesn\'t exist."}',true);
+        echo '{"status":"error","message":"Provided service doesn\'t exist."}';
     }
 }
 else{
-    echo json_encode('{"status":"error","message":"Can\'t remove user with given parameters."}',true);
+    echo '{"status":"error","message":"Can\'t remove user with given parameters."}';
 }
 
 function check_data($entry){

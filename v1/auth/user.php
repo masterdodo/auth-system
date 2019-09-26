@@ -15,10 +15,10 @@ if(isset($data["service"]) && isset($data["service_salt"]) && (isset($data["id"]
             $sql2->execute(array($user_id));
             if($sql1->fetchColumn() > 0){
                 $result = json_encode($sql2->fetch(PDO::FETCH_ASSOC),true);
-                echo json_encode('{"status":"success","message":"Users returned.","data":'.$result.'}',true);
+                echo '{"status":"success","message":"Users returned.","data":'.$result.'}';
             }
             else{
-                echo json_encode('{"status":"error","message":"No user with that id found."}',true);
+                echo '{"status":"error","message":"No user with that id found."}';
             }
         }
         else if(isset($data["email"])){
@@ -28,23 +28,23 @@ if(isset($data["service"]) && isset($data["service_salt"]) && (isset($data["id"]
             $sql2 = $pdo->prepare("SELECT id,email,username,user_type,service,created_at,updated_at FROM users WHERE email=? AND service=? LIMIT 1");
             $sql2->execute(array($user_email,$service_name));
             if($sql1->fetchColumn() > 0){
-                $result = $sql2->fetch(PDO::FETCH_ASSOC);
-                echo json_encode('{"status":"success","message":"Users returned.","data":'.$result.'}',true);
+                $result = json_encode($sql2->fetch(PDO::FETCH_ASSOC),true);
+                echo '{"status":"success","message":"Users returned.","data":'.$result.'}';
             }
             else{
-                echo json_encode('{"status":"error","message":"No user with that email found."}',true);
+                echo '{"status":"error","message":"No user with that email found."}';
             }
         }
         else {
-            echo json_encode('{"status":"error","message":"Id or email have to be passed."}',true);
+            echo '{"status":"error","message":"Id or email have to be passed."}';
         }
     }
     else{
-        echo json_encode('{"status":"error","message":"Service doesn\'t exist."}',true);
+        echo '{"status":"error","message":"Service doesn\'t exist."}';
     }
 }
 else{
-    echo json_encode('{"status":"error","message":"Can\'t operate with given parameters."}',true);
+    echo '{"status":"error","message":"Can\'t operate with given parameters."}';
 }
 
 function check_data($entry){

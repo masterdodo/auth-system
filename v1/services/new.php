@@ -12,22 +12,22 @@ if(isset($data["name"]) && isset($data["key"])){
             $service_salt = password_hash($service_code,PASSWORD_DEFAULT);
             $sql = $pdo->prepare("INSERT INTO services(name, service_salt) VALUES(?,?)");
             if($sql->execute(array($service_name,$service_salt))){
-                echo json_encode('{"status":"success","message":"Service added.", "data":{"name":"'.$service_name.'","salt":"'.$service_salt.'"}}',true);
+                echo '{"status":"success","message":"Service added.", "data":{"name":"'.$service_name.'","salt":"'.$service_salt.'"}}';
             }
             else{
-                echo json_encode('{"status":"error","message":"Service not added. Try again later."}',true);
+                echo '{"status":"error","message":"Service not added. Try again later."}';
             }
         }
         else{
-            echo json_encode('{"status":"error","message":"Special value missing."}',true);
+            echo '{"status":"error","message":"Special value missing."}';
         }
     }
     else{
-        echo json_encode('{"status":"error","message":"Service already exists."}',true);
+        echo '{"status":"error","message":"Service already exists."}';
     }
 }
 else{
-    echo json_encode('{"status":"error","message":"Can\'t operate with given parameters."}',true);
+    echo '{"status":"error","message":"Can\'t operate with given parameters."}';
 }
 
 function check_data($entry){

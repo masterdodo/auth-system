@@ -13,18 +13,18 @@ if(isset($data["service"]) && isset($data["service_salt"])){
         $sql_users2->execute(array($service_name));
         $result = json_encode($sql_users1->fetchAll(PDO::FETCH_ASSOC),true);
         if($sql_users2->fetchColumn() > 0){
-            echo json_encode('{"status":"success","message":"Users returned successfully.","data":'.$result.'}',true);
+            echo '{"status":"success","message":"Users returned successfully.","data":'.$result.'}';
         }
         else{
-            echo json_encode('{"status":"error","message":"No users found."}',true);
+            echo '{"status":"error","message":"No users found."}';
         }
     }
     else{
-        echo json_encode('{"status":"error","message":"Given parameters don\'t match any service. Please check the parameters."}',true);
+        echo '{"status":"error","message":"Given parameters don\'t match any service. Please check the parameters."}';
     }
 }
 else{
-    echo json_encode('{"status":"error","message":"Can\'t operate with given parameters."}',true);
+    echo '{"status":"error","message":"Can\'t operate with given parameters."}';
 }
 
 function check_data($entry){

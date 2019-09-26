@@ -23,22 +23,22 @@ if(isset($data["email"]) && isset($data["username"]) && isset($data["password"])
             $sql = $pdo->prepare("INSERT INTO users(email,username,password,user_type,service) VALUES(?,?,?,?,?)");
             if($sql->execute(array($email,$username,$hashed_password,$user_type,$service)))
             {
-                echo json_encode('{"status":"success","message":"User added successfully."}',true);
+                echo '{"status":"success","message":"User added successfully."}';
             }
             else{
-                echo json_encode('{"status":"error","message":"Error adding user. Please try again later."}',true);
+                echo '{"status":"error","message":"Error adding user. Please try again later."}';
             }
         }
         else{
-            echo json_encode('{"status":"error","message":"Username or email already exists."}',true);
+            echo '{"status":"error","message":"Username or email already exists."}';
         }
     }
     else{
-        echo json_encode('{"status":"error","message":"No service matches. Check the data."}',true);
+        echo '{"status":"error","message":"No service matches. Check the data."}';
     }
 }
 else{
-    echo json_encode('{"status":"error","message":"There was a wrong input of some sort. Check the data that was sent."}',true);
+    echo '{"status":"error","message":"There was a wrong input of some sort. Check the data that was sent."}';
 }
 
 function check_data($entry){
