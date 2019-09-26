@@ -7,10 +7,12 @@ if(isset($data["service"]) && isset($data["service_salt"])){
     $sql_service_exists = $pdo->prepare("SELECT COUNT(*) FROM services WHERE name=? AND service_salt=?");
     $sql_service_exists->execute(array($service_name,$service_salt));
     if($sql_service_exists->fetchColumn() > 0){
-        $sql_users = $pdo->prepare("SELECT id,email,username,service,user_type,created_at,updated_at FROM users WHERE service=?");
-        $users_execute = $sql_users->execute(array($service_name));
-        $result = json_encode($users_execute->fetchAll(PDO::FETCH_ASSOC),true);
-        if($users_execute->fetchColumn() > 0){
+        $sql_users1 = $pdo->prepare("SELECT id,email,username,service,user_type,created_at,updated_at FROM users WHERE service=?");
+        $sql_users1->execute(array($service_name));
+        $sql_users2 = $pdo->prepare("SELECT id,email,username,service,user_type,created_at,updated_at FROM users WHERE service=?");
+        $sql_users2->execute(array($service_name));
+        $result = json_encode($sql_users1->fetchAll(PDO::FETCH_ASSOC),true);
+        if($sql_users2->fetchColumn() > 0){
             echo json_encode('{"status":"success","message":"Users returned successfully.","data":'.$result.'}',true);
         }
         else{
