@@ -25,26 +25,26 @@ if(isset($data["password"]) && isset($data["service"]) && isset($data["service_s
                             $newhash = password_hash($password,PASSWORD_DEFAULT);
                             $sql_newhash = $pdo->prepare("UPDATE users SET password=? WHERE email=?");
                             if($sql_newhash->execute(array($newhash, $email))){
-                                echo json_encode('{"status":"success", "message":"Successfully authenticated. Password secured to new encryption.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}',true);
+                                echo '{"status":"success", "message":"Successfully authenticated. Password secured to new encryption.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}';
                             }
                             else{
-                                echo json_encode('{"status":"success", "message":"Successfully authenticated. Rehashing password to new encryption failed.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}',true);
+                                echo '{"status":"success", "message":"Successfully authenticated. Rehashing password to new encryption failed.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}';
                             }
                         }
                         else{
-                            echo json_encode('{"status":"success", "message":"Successfully authenticated.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}',true);
+                            echo '{"status":"success", "message":"Successfully authenticated.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}';
                         }
                     }
                     else{
-                        echo json_encode('{"status":"error", "message":"Wrong password."}',true);
+                        echo '{"status":"error", "message":"Wrong password."}';
                     }
                 }
                 else{
-                    echo json_encode('{"status":"error", "message":"User doesn\'t exist. Check the email."}',true);
+                    echo '{"status":"error", "message":"User doesn\'t exist. Check the email."}';
                 }
             }
             else{
-                echo json_encode('{"status":"error", "message":"Email not set as defined in the type."}',true);
+                echo '{"status":"error", "message":"Email not set as defined in the type."}';
             }
         }
         else if($type=="username"){
@@ -62,38 +62,38 @@ if(isset($data["password"]) && isset($data["service"]) && isset($data["service_s
                             $newhash = password_hash($password,PASSWORD_DEFAULT);
                             $sql_newhash = $pdo->prepare("UPDATE users SET password=? WHERE username=?");
                             if($sql_newhash->execute(array($newhash, $username))){
-                                echo json_encode('{"status":"success", "message":"Successfully authenticated. Password secured to new encryption.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}',true);
+                                echo '{"status":"success", "message":"Successfully authenticated. Password secured to new encryption.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}';
                             }
                             else{
-                                echo json_encode('{"status":"success", "message":"Successfully authenticated. Rehashing password to new encryption failed.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}',true);
+                                echo '{"status":"success", "message":"Successfully authenticated. Rehashing password to new encryption failed.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}';
                             }
                         }
                         else{
-                            echo json_encode('{"status":"success", "message":"Successfully authenticated.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}',true);
+                            echo '{"status":"success", "message":"Successfully authenticated.", "data":{"id":"'.$result["id"].'","email":"'.$result["email"].'","username":"'.$result["username"].'","user_type":"'.$result["user_type"].'"}}';
                         }
                     }
                     else{
-                        echo json_encode('{"status":"error", "message":"Wrong password."}',true);
+                        echo '{"status":"error", "message":"Wrong password."}';
                     }
                 }
                 else{
-                    echo json_encode('{"status":"error", "message":"User doesn\'t exist. Check the email."}',true);
+                    echo '{"status":"error", "message":"User doesn\'t exist. Check the email."}';
                 }
             }
             else{
-                echo json_encode('{"status":"error", "message":"Username not set as defined in the type."}',true);
+                echo '{"status":"error", "message":"Username not set as defined in the type."}';
             }
         }
         else{
-            echo json_encode('{"status":"error", "message":"Unknown type."}',true);
+            echo '{"status":"error", "message":"Unknown type."}';
         }
     }
     else{
-        echo json_encode('{"status":"error", "message":"Specified service not registered. Check the data."}',true);
+        echo '{"status":"error", "message":"Specified service not registered. Check the data."}';
     }
 }
 else{
-    echo json_encode('{"status":"error", "message":"Can\'t operate with given parameters."}',true);
+    echo '{"status":"error", "message":"Can\'t operate with given parameters."}';
 }
 
 function check_data($entry){
