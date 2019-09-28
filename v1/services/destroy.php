@@ -7,16 +7,14 @@ if(isset($data["name"]) && isset($data["key"])){
     $admin_key = check_data($data["key"]);
     $sql_service_exists = $pdo->prepare("SELECT COUNT(*) FROM services WHERE name=?");
     $sql_service_exists->execute(array($service_name));
-    if($sql_service_exists->fetchColumn() == 0){
+    if($sql_service_exists->fetchColumn() > 0){
         if($admin_key==="1308F771CFD56C24E90C731A4896DF27B59A8EB80A59BBC919AAB717696F6CE65D193E92CAEDE4592ED7698EAC7D18AF73136D9120EA09477A963D964FB0B427"){
-            $service_code = $service_name .'_'. rand(100000,999999);
-            $service_salt = password_hash($service_code,PASSWORD_DEFAULT);
-            $sql = $pdo->prepare("INSERT INTO services(name, service_salt) VALUES(?,?)");
-            if($sql->execute(array($service_name,$service_salt))){
-                echo '{"status":"success","message":"Service added.", "data":{"name":"'.$service_name.'","salt":"'.$service_salt.'"}}';
+            $sql = $pdo->prepare("DELETE FROM services WHERE name=?");
+            if($sql->execute(array($service_name))){
+                echo '{"status":"success","message":"Service removed."}';
             }
             else{
-                echo '{"status":"error","message":"Service not added. Try again later."}';
+                echo '{"status":"error","message":"Service not removed. Try again later."}';
             }
         }
         else{
@@ -24,7 +22,7 @@ if(isset($data["name"]) && isset($data["key"])){
         }
     }
     else{
-        echo '{"status":"error","message":"Service already exists."}';
+        echo '{"status":"error","message":"Service doesn\'t exist."}';
     }
 }
 else{
