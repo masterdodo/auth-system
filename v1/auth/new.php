@@ -22,8 +22,7 @@ if(isset($data["email"]) && isset($data["username"]) && isset($data["password"])
         if($sql_check->fetchColumn() == 0){
             $hashed_password = password_hash($password,PASSWORD_DEFAULT);
             $sql = $pdo->prepare("INSERT INTO users(email,username,password,user_type,service) VALUES(?,?,?,?,?)");
-            if($sql->execute(array($email,$username,$hashed_password,$user_type,$service)))
-            {
+            if($sql->execute(array($email,$username,$hashed_password,$user_type,$service))){
                 echo '{"status":"success","message":"User added successfully."}';
             }
             else{
